@@ -11,7 +11,7 @@
 - **Language**: [Java 19](https://www.oracle.com/java/technologies/downloads/#java19)
 
 ## Instructions
-[Project 2](https://pdfhost.io/v/zeJbkcLUb_COSC_461001_Project2)
+[Project 2 instructions](https://pdfhost.io/v/zeJbkcLUb_COSC_461001_Project2)
 
 ## Team Members [⬆️](#table-of-contents)
 - [@Osida](https://github.com/Osida)
