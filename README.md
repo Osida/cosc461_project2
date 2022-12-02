@@ -14,13 +14,13 @@ Implementing minimax algorithm and alpha-beta pruning via Nine Men's Morris Game
   </ol>
 </details>
 
-## Documentation
+## Documentation 📄
 [Project 2 documentation](https://pdfhost.io/v/zeJbkcLUb_COSC_461001_Project2)
 
-## Tech
+## Tech 💾
 **Language:** [Java 19](https://www.oracle.com/java/technologies/downloads/#java19)
 
-## About the game
+## About the game 📜
 <div display="flex" justify-content="space-evenly">
   <img width="240" alt="board" src="https://user-images.githubusercontent.com/51928654/204848799-0718cb30-0349-4682-92f8-fbbdaf7a293b.png">
   <img width="529" alt="image" src="https://user-images.githubusercontent.com/51928654/204849047-ffce82f9-7d66-49d1-b4ec-bc737fdaa570.png">
@@ -85,7 +85,7 @@ A player down to only 3 pieces may move (hopping) a piece to any vacant intersec
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Authors
+## Authors ✍️
 - [@Osida](https://github.com/Osida)
 - [@Everett](#)
 
