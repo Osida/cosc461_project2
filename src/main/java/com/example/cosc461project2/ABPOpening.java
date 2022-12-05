@@ -29,7 +29,7 @@ public class ABPOpening {
                 System.out.println("ABP_ESTIMATE :"+ ab_estimate);
                 out.println("Board Position : "+new String(d));
                 out.println("Positions evaluated by static estimation : "+ positions_evaluated);
-                out.println("MiniMax estimate : " + ab_estimate);
+                out.println("ABP estimate : " + ab_estimate);
             }
             fis.close();
             out.close();
