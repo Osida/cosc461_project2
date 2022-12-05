@@ -1,0 +1,5 @@
+
+Input position: xxxxxxxxxxWWxWWxBBBxxxx
+Output position: xxxxxxxxxWxWxWWxBBBxxxx
+Positions evaluated by static estimation: 17
+MiniMax estimate: 1000
