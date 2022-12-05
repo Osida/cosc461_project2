@@ -6,16 +6,16 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ABPOpening {
+public class MiniMaxOpeningBlack {
     private static int positions_evaluated;
-    private static int ab_estimate;
+    private static int minimax_estimate;
 
     public static void main(String[] args){
 
         File board1F = new File(args[0]);
         File board2F = new File(args[1]);
         int depth = Integer.parseInt(args[2]);
-        int ax = -999999, bx = 999999;
+
         try {
             FileInputStream fis = new FileInputStream(board1F);
             PrintWriter out = new PrintWriter(new FileWriter(board2F));
@@ -24,14 +24,17 @@ public class ABPOpening {
             while(s.hasNextLine()){
                 String str= s.next();
                 char[] b = str.toCharArray();
-                ABPOpening ab = new ABPOpening();
+                MiniMaxOpeningBlack m = new MiniMaxOpeningBlack();
+
+                b = m.toBlack(b);
                 System.out.println("__BOARD__: "+new String(b));
-                char[] d = ab.MaxMin(b, depth, ax, bx);//Need to update
-                System.out.println("POSITIONS_EVALUATED :"+ ab.positions_evaluated);
-                System.out.println("ABP_ESTIMATE :"+ ab_estimate);
+
+                char[] d = m.MaxMin(b, depth);
+                System.out.println("POSITIONS_EVALUATED :"+ positions_evaluated);
+                System.out.println("MINIMAX_BLACK_ESTIMATE :"+ minimax_estimate);
                 out.println("Board Position : "+new String(d));
                 out.println("Positions evaluated by static estimation : "+ positions_evaluated);
-                out.println("ABP estimate : " + ab_estimate);
+                out.println("MiniMaxBlack estimate : " + minimax_estimate);
             }
             fis.close();
             out.close();
@@ -45,7 +48,7 @@ public class ABPOpening {
         for(int i = 0; i < b.length; i++){
             if(b[i] == 'x'){
                 bCopy = b.clone();
-                bCopy[i] = 'W';
+                bCopy[i] = 'B';
                 if(closeMill(i,bCopy)){
                     gAList = gRem(bCopy, gAList);
                 }else{
@@ -65,7 +68,7 @@ public class ABPOpening {
         ArrayList<char[]> gRList = (ArrayList<char[]>) l.clone();
 
         for (int i = 0; i < b.length; i++){
-            if(b[i]=='B') {
+            if(b[i]=='W') {
                 if(!(closeMill(i,b))){
                     char[] bCopy = b.clone();
                     bCopy[i] = 'x';
@@ -79,7 +82,7 @@ public class ABPOpening {
         return gRList;
 
     }
-    public ArrayList<char[]> gBlk(char[] b) {
+    public ArrayList<char[]> gWht(char[] b) {
 
         char[] tempb = b.clone();
         for(int i=0;i<tempb.length;i++) {
@@ -98,12 +101,12 @@ public class ABPOpening {
         gbm = gAdd(tempb);
         for(char[] y : gbm) {
             for(int i = 0; i< y.length; i++) {
-                if(y[i]=='W') {
-                    y[i] = 'B';
-                    continue;
-                }
                 if(y[i]=='B') {
                     y[i] = 'W';
+                    continue;
+                }
+                if(y[i]=='W') {
+                    y[i] = 'B';
                 }
             }
             gbmswap.add(y);
@@ -111,7 +114,7 @@ public class ABPOpening {
         return gbmswap;
     }
 
-    public char[] MaxMin(char[] b, int depth, int ax, int bx){
+    public char[] MaxMin(char[] b, int depth){
         if(depth>0){
             System.out.println("MAXMIN_DEPTH: "+ depth);
             depth--;
@@ -122,17 +125,11 @@ public class ABPOpening {
             int v=-999999;
 
             for (char[] chars : white) {
-                minBoard = MinMax(chars, depth, ax, bx);
+                minBoard = MinMax(chars, depth);
                 if (v < sEstOpen(minBoard)) {
                     v = sEstOpen(minBoard);
-                    ab_estimate = v;
+                    minimax_estimate = v;
                     maxBoardchoice = chars;
-                }
-                if(v>=bx){
-                    return maxBoardchoice;
-                }
-                else{
-                    ax = Math.max(v,ax);
                 }
             }
             return maxBoardchoice;
@@ -141,26 +138,21 @@ public class ABPOpening {
         }
         return b;
     }
-    public char[] MinMax(char[]b, int depth, int ax, int bx) {
+    public char[] MinMax(char[]b, int depth) {
 
         if(depth>0) {
             depth--;
             ArrayList<char[]> black;
             char[] maxBoard;
             char[] minBoardchoice = new char[50];
-            black = gBlk(b);
+            black = gWht(b);
             int v=999999;
 
             for (char[] chars : black) {
-                maxBoard = MaxMin(chars, depth, ax, bx);
+                maxBoard = MaxMin(chars, depth);
                 if (v > sEstOpen(maxBoard)) {
                     v = sEstOpen(maxBoard);
                     minBoardchoice = chars;
-                }
-                if(v<=ax){
-                    return minBoardchoice;
-                }else{
-                    bx = Math.min(v,bx);
                 }
             }
             return minBoardchoice;
@@ -243,6 +235,19 @@ public class ABPOpening {
         }
         return cW-cB;
     }
+    public char[] toBlack(char[] b) {
 
+        char[] tempB = b.clone();
 
+        for(int i=0;i<tempB.length;i++) {
+            if(tempB[i]=='W') {
+                tempB[i] = 'B';
+                continue;
+            }
+            if(tempB[i]=='B') {
+                tempB[i] = 'W';
+            }
+        }
+        return tempB;
+    }
 }
