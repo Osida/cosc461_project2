@@ -1,17 +1,16 @@
 package com.example.cosc461project2;
-// Everett Clay Osida Richards
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MiniMaxOpening {
+public class ABPOpening {
 
 
-    private static int positions_evaluated;
-    private static int minimax_estimate;
+    private static int positions_evaluated=0;
+    private static int minimax_estimate = 0;
 
-    public static void main(String[] args){
+    public static void main(String []args){
 
         File board1F = new File(args[0]);
         File board2F = new File(args[1]);
@@ -25,15 +24,15 @@ public class MiniMaxOpening {
             while(s.hasNextLine()){
                 String str= s.next();
                 char[] b = str.toCharArray();
-                MiniMaxOpening m = new MiniMaxOpening();
+                ABPOpening a = new ABPOpening();
                 System.out.println("__BOARD__: "+new String(b));
 
-                char[] d = m.MaxMin(b, depth);
-                System.out.println("POSITIONS_EVALUATED :"+ positions_evaluated);
-                System.out.println("MINIMAX_ESTIMATE :"+ minimax_estimate);
+                char[] d = a."Somethin"(b, depth);
+                System.out.println("POSITIONS_EVALUATED :"+a.positions_evaluated);
+                System.out.println("MINIMAX_ESTIMATE :"+a.minimax_estimate);
                 out.println("Board Position : "+new String(d));
-                out.println("Positions evaluated by static estimation : "+ positions_evaluated);
-                out.println("MiniMax estimate : " + minimax_estimate);
+                out.println("Positions evaluated by static estimation : "+a.positions_evaluated);
+                out.println("MiniMax estimate : " +a.minimax_estimate);
             }
             fis.close();
             out.close();
@@ -41,9 +40,9 @@ public class MiniMaxOpening {
             e.printStackTrace();
         }
     }
-    public ArrayList<char[]> gAdd(char [] b){
-        ArrayList<char[]> gAList = new ArrayList<>();
-        char[] bCopy;
+    public ArrayList gAdd(char [] b){
+        ArrayList<char[]> gAList = new ArrayList<char[]>();
+        char bCopy[];
         for(int i = 0; i < b.length; i++){
             if(b[i] == 'x'){
                 bCopy = b.clone();
@@ -63,17 +62,17 @@ public class MiniMaxOpening {
     public void gHop(){
 
     }
-    public ArrayList<char[]> gRem(char [] b, ArrayList<char[]> l){
-        ArrayList<char[]> gRList = (ArrayList<char[]>) l.clone();
+    public ArrayList gRem(char [] b, ArrayList l){
+        ArrayList<char[]> gRList = (ArrayList) l.clone();
 
         for (int i = 0; i < b.length; i++){
             if(b[i]=='B') {
                 if(!(closeMill(i,b))){
-                    char[] bCopy = b.clone();
+                    char bCopy[]= b.clone();
                     bCopy[i] = 'x';
                     gRList.add(bCopy);
                 }else{
-                    char[] bCopy =b.clone();
+                    char bCopy[]=b.clone();
                     gRList.add(bCopy);
                 }
             }
@@ -81,7 +80,7 @@ public class MiniMaxOpening {
         return gRList;
 
     }
-    public ArrayList<char[]> gBlk(char[] b) {
+    public ArrayList gBlk(char[] b) {
 
         char[] tempb = b.clone();
         for(int i=0;i<tempb.length;i++) {
@@ -99,13 +98,14 @@ public class MiniMaxOpening {
 
         gbm = gAdd(tempb);
         for(char[] y : gbm) {
-            for(int i = 0; i< y.length; i++) {
-                if(y[i]=='W') {
-                    y[i] = 'B';
+            char[] tempbc = y;
+            for(int i=0;i<tempbc.length;i++) {
+                if(tempbc[i]=='W') {
+                    tempbc[i] = 'B';
                     continue;
                 }
-                if(y[i]=='B') {
-                    y[i] = 'W';
+                if(tempbc[i]=='B') {
+                    tempbc[i] = 'W';
                 }
             }
             gbmswap.add(y);
@@ -113,82 +113,57 @@ public class MiniMaxOpening {
         return gbmswap;
     }
 
-    public char[] MaxMin(char[] b, int depth){
-        if(depth>0){
-            System.out.println("MAXMIN_DEPTH: "+ depth);
-            depth--;
-            ArrayList<char[]> white;
-            char[] minBoard;
-            char[] maxBoardchoice = new char[50];
-            white = gAdd(b);
-            int v=-999999;
-
-            for (char[] chars : white) {
-                minBoard = MinMax(chars, depth);
-                if (v < sEstOpen(minBoard)) {
-                    v = sEstOpen(minBoard);
-                    minimax_estimate = v;
-                    maxBoardchoice = chars;
-                }
-            }
-            return maxBoardchoice;
-        }else if(depth == 0){
-            positions_evaluated++;
-        }
-        return b;
-    }
-    public char[] MinMax(char[]b, int depth) {
-
-        if(depth>0) {
-            depth--;
-            ArrayList<char[]> black;
-            char[] maxBoard;
-            char[] minBoardchoice = new char[50];
-            black = gBlk(b);
-            int v=999999;
-
-            for (char[] chars : black) {
-                maxBoard = MaxMin(chars, depth);
-                if (v > sEstOpen(maxBoard)) {
-                    v = sEstOpen(maxBoard);
-                    minBoardchoice = chars;
-                }
-            }
-            return minBoardchoice;
-        }
-        else if(depth==0){
-            positions_evaluated++;
-        }
-        return b;
-    }
-
     public int[] neighbors(int location){ //format return better?
-        return switch (location) {
-            case 0 -> new int[]{1, 3, 8};
-            case 1 -> new int[]{0, 2, 4};
-            case 2 -> new int[]{1, 5, 13};
-            case 3 -> new int[]{0, 4, 6, 9};
-            case 4 -> new int[]{1, 3, 5};
-            case 5 -> new int[]{2, 4, 7, 12};
-            case 6 -> new int[]{3, 7, 9};
-            case 7 -> new int[]{5, 6, 11};
-            case 8 -> new int[]{0, 9, 20};
-            case 9 -> new int[]{3, 8, 10, 17};
-            case 10 -> new int[]{6, 9, 14};
-            case 11 -> new int[]{7, 12, 16};
-            case 12 -> new int[]{5, 11, 13, 19};
-            case 13 -> new int[]{2, 12, 22};
-            case 14 -> new int[]{10, 15, 17};
-            case 15 -> new int[]{4, 16, 18};
-            case 16 -> new int[]{11, 15, 19};
-            case 17 -> new int[]{9, 14, 18, 20};
-            case 18 -> new int[]{15, 17, 19, 21};
-            case 19 -> new int[]{12, 16, 18, 22};
-            case 20 -> new int[]{8, 17, 21};
-            case 21 -> new int[]{18, 20, 22};
-            case 22 -> new int[]{13, 19, 21};
-            default -> new int[]{};
-        };
+        switch (location) {
+            case 0:
+                return new int[]{1, 3, 8};
+            case 1 :
+                return new int[] {0,2,4};
+            case 2 :
+                return new int[]{1,5,13};
+            case 3 :
+                return new int[]{0,4,6,9};
+            case 4 :
+                return new int[]{1,3,5};
+            case 5 :
+                return new int[]{2,4,7,12};
+            case 6 :
+                return new int[]{3,7,9};
+            case 7 :
+                return new int[]{5,6,11};
+            case 8 :
+                return new int[]{0,9,20};
+            case 9 :
+                return new int[]{3,8,10,17};
+            case 10 :
+                return new int[]{6,9,14};
+            case 11 :
+                return new int[]{7,12,16};
+            case 12 :
+                return new int[]{5,11,13,19};
+            case 13 :
+                return new int[]{2,12,22};
+            case 14 :
+                return new int[]{10,15,17};
+            case 15 :
+                return new int[]{4,16,18};
+            case 16 :
+                return new int[]{11,15,19};
+            case 17 :
+                return new int[]{9,14,18,20};
+            case 18 :
+                return new int[]{15,17,19,21};
+            case 19 :
+                return new int[]{12,16,18,22};
+            case 20 :
+                return new int[]{8,17,21};
+            case 21 :
+                return new int[]{18,20,22};
+            case 22 :
+                return new int[]{13,19,21};
+            default :
+                return new int[]{};
+        }
     }
     public boolean closeMill(int location, char [] b){
         char color = b[location];
